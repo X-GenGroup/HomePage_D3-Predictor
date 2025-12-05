@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="D³-Predictor: Noise-Free Deterministic Diffusion for Dense Prediction">
+  <meta name="keywords" content="From Ideal to Real">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>D³-Predictor: Noise-Free Deterministic Diffusion for Dense Prediction</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/favicon_io/logo3.png">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <link rel="stylesheet" href="https://cdn.knightlab.com/libs/juxtapose/latest/css/juxtapose.css">
+  <script src="https://cdn.knightlab.com/libs/juxtapose/latest/js/juxtapose.min.js"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <img src="static/favicon_io/logo3.png" alt="Logo" style="height: 100px; margin-bottom: 6px;">
+          <h1 class="title is-1 publication-title">D³-Predictor: Noise-Free Deterministic Diffusion for Dense Prediction</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://xcltql666.github.io/xcll.github.io/">Changliang Xia</a><sup>*</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://chengyou-jia.github.io/">Chengyou Jia</a><sup>*</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://scholar.google.com/citations?hl=en&user=C3ujEF0AAAAJ">Minnan Luo</a><sup>†</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://scholar.google.com/citations?user=8qX4Z5IAAAAJ">Zhuohang Dang</a>,
+            </span>
+            <span class="author-block">
+              <a href="https://github.com/King-Wood-Shen/Xin-Shen.github.io">Xin Shen</a>,
+            </span>
+            <span class="author-block">
+              <a href="https://jayce-ping.github.io/homepage">Bowen Ping</a>,
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">Xi'an Jiaotong University</span>
+            <br>
+            <span class="eql-cntrb"><small><sup>*</sup>Equal Contribution.</small></span>
+            <span class="eql-cntrb"><small><sup>†</sup>Corresponding Author.</small></span>
+          </div>
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="https://github.com/"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://github.com/"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+
+              <span class="link-block">
+                <a href="https://github.com/"
+                  class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://huggingface.co/collections/X-GenGroup/d3-predictor-model"
+                  class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <img src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" alt="Hugging Face" style="height: 1em;">
+                  </span>
+                  <span>Model</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://huggingface.co/collections/X-GenGroup/d3-predictor-data"
+                  class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <img src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" alt="Hugging Face" style="height: 1em;">
+                  </span>
+                  <span>Dataset</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section hero">  
+  
+  <div class="section has-text-centered" style="margin-top: -6em;">
+    <div style="display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 32px;">
+      <img src="static/images/more.png" alt="Logo" style="height: 28px;">
+      <h2 class="title is-3 has-text-centered" style="margin: 0;">Demos and Comparison</h2>
+    </div>
+    <div class="buttons is-centered" id="demo-buttons">
+      <button class="button is-info is-active" onclick="showDemoImage('adverse', 0)">Depth Estimation</button>
+      <button class="button is-info" onclick="showDemoImage('city', 1)">Surface Normal Estimation</button>
+      <button class="button is-info" onclick="showDemoImage('medical', 2)">Image Matting</button>
+      <button class="button is-info" onclick="showDemoImage('eco', 3)">Real-World Applications (1)</button>
+      <button class="button is-info" onclick="showDemoImage('safety', 4)">Real-World Applications (2)</button>
+    </div>
+    <div id="demo-image-container" style="margin-top: 1.5em;">
+    </div>
+  </div>
+
+  <style>
+    #demo-buttons .button.is-active {
+      background-color: #23527c !important;
+      color: #fff !important;
+      box-shadow: 0 4px 16px rgba(35,82,124,0.25), 0 1.5px 4px rgba(0,0,0,0.15);
+      border: 2px solid #16324a;
+      transition: box-shadow 0.2s, border 0.2s, background 0.2s;
+    }
+  </style>
+
+  <script>
+  const demoData = [
+    {type: 'adverse', img: 'static/images/proj_depth_page-0001.jpg', alt: 'Depth Estimation'},
+    {type: 'city', img: 'static/images/proj_normal_page-0001.jpg', alt: 'Surface Normal Estimation'},
+    {type: 'medical', img: 'static/images/proj_matting_page-0001.jpg', alt: 'Image Matting'},
+    {type: 'eco', img: 'static/images/crop_1_page-0001.jpg', alt: 'Real-World Applications (1)'},
+    {type: 'safety', img: 'static/images/crop_2_page-0001.jpg', alt: 'Real-World Applications (2)'}
+  ];
+  let currentDemoIndex = 0;
+  let autoSwitchTimer = null;
+
+  window.addEventListener('DOMContentLoaded', function() {
+    showDemoImage('adverse', 0);
+  });
+
+  function showDemoImage(type, idx, restartTimer = true) {
+    const btns = document.querySelectorAll('#demo-buttons .button');
+    btns.forEach((btn, i) => {
+      if(i === idx) btn.classList.add('is-active');
+      else btn.classList.remove('is-active');
+    });
+
+    const demo = demoData.find(d => d.type === type);
+    document.getElementById('demo-image-container').innerHTML =
+      `<img src="${demo.img}" alt="${demo.alt}" style="max-width: 60%; height: auto; margin-top: 1em;">`;
+
+    currentDemoIndex = idx;
+    if (restartTimer) {
+      scheduleAutoSwitch();
+    }
+  }
+
+  function scheduleAutoSwitch() {
+    if (autoSwitchTimer) {
+      clearInterval(autoSwitchTimer);
+    }
+    autoSwitchTimer = setInterval(() => {
+      const nextIndex = (currentDemoIndex + 1) % demoData.length;
+      const nextDemo = demoData[nextIndex];
+      showDemoImage(nextDemo.type, nextIndex, false);
+    }, 3000);
+  }
+  </script>
+</section>  
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 32px; margin-top: -6em;">
+          <img src="static/images/abstract.png" alt="Logo" style="height: 34px;">
+          <h2 class="title is-3">Abstract</h2>
+        </div>
+        <div class="content has-text-justified">
+          <p>
+            Although diffusion models with strong visual priors have emerged as powerful dense prediction backboens, they overlook a core limitation: the stochastic noise at the core of diffusion sampling is inherently misaligned with dense prediction that requires a deterministic mapping from image to geometry. In this paper, we show that this stochastic noise corrupts fine-grained spatial cues and pushes the model toward timestep-specific noise objectives, consequently destroying meaningful geometric structure mappings. To address this, we introduce <strong>D³-Predictor</strong>, a noise-free deterministic framework built by reformulating a pretrained diffusion model without stochasticity noise. Instead of relying on noisy inputs to leverage diffusion priors, D³-Predictor views the pretrained diffusion network as an ensemble of timestep-dependent visual experts and self-supervisedly aggregates their heterogeneous priors into a single, clean, and complete geometric prior. Meanwhile, we utilize task-specific supervision to seamlessly adapt this noise-free prior to dense prediction tasks. Extensive experiments on various dense prediction tasks demonstrate that D³-Predictor achieves competitive or state-of-the-art performance in diverse scenarios. In addition, it requires less than half the training data previously used and efficiently performs inference in a single step.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <section class="hero is-small">
+      <div class="hero-body">
+          <div class="container  is-max-desktop">
+              <div class="columns is-centered has-text-centered">
+                  <div class="column is-full">
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 32px;">
+                      <img src="static/favicon_io/logo3.png" alt="Logo" style="height: 48px;">
+                      <h2 class="title is-3">DenseDiT Architecture</h2>
+                    </div>
+                      <div class="item">
+                          <img src="static/images/method8.jpg" width="90%" alt="ap-clip" />
+                          <h2 class="subtitle has-text-left" style="font-size: 16px;">
+                          <strong>Overview of the D³-Predictor.</strong> (a) We reformulate the pretrained diffusion model into a noise-free framework to better suit dense prediction tasks, without compromising the diffusion prior with minimal overhead. (b) The D³-Predictor takes a clean image as input and produces an accurate prediction with impressive geometric details in a single step.
+                          </h2>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="content has-text-centered">
+          <a class="icon-link"
+             href="" class="external-link" disabled>
+            <i class="fas fa-file-pdf"></i>
+          </a>
+          <a class="icon-link" href="" class="external-link" disabled>
+            <i class="fab fa-github"></i>
+          </a>
+        </div>
+        <div class="columns is-centered">
+          <div class="column is-8">
+            <div class="content">
+              <p>
+                This website is licensed under a <a rel="license"
+                                                    href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+                Commons Attribution-ShareAlike 4.0 International License</a>.
+              </p>
+              <p>
+                This means you are free to borrow the <a
+                  href="https://github.com/nerfies/nerfies.github.io">source code</a> of this website,
+                we just ask that you link back to this page in the footer.
+                Please remember to remove the analytics code included in the header of the website which
+                you do not want on your website.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+</body>
+</html>
