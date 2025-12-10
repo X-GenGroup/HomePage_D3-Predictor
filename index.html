@@ -123,7 +123,7 @@
   </div>
 </section>
 
-<section class="section hero">  
+<section class="section hero" style="padding-bottom: 0;">  
   
   <div class="section has-text-centered" style="margin-top: -6em;">
     <div style="display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 32px;">
@@ -137,7 +137,7 @@
       <button class="button is-info" onclick="showDemoImage('eco', 3)">Real-World Applications (1)</button>
       <button class="button is-info" onclick="showDemoImage('safety', 4)">Real-World Applications (2)</button>
     </div>
-    <div id="demo-image-container" style="margin-top: 1.5em;">
+    <div id="demo-image-container" style="margin-top: 1.5em; position: relative; display: flex; justify-content: center; align-items: center; height: 700px; width: 100%; margin-bottom: 0em; overflow: hidden;">
     </div>
   </div>
 
@@ -148,6 +148,23 @@
       box-shadow: 0 4px 16px rgba(35,82,124,0.25), 0 1.5px 4px rgba(0,0,0,0.15);
       border: 2px solid #16324a;
       transition: box-shadow 0.2s, border 0.2s, background 0.2s;
+    }
+    .demo-image {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      max-width: 60%;
+      max-height: 90%;
+      height: auto;
+      opacity: 0;
+      transition: opacity 0.6s ease-in-out;
+    }
+    .demo-image.active {
+      opacity: 1;
+    }
+    .demo-image.fade-out {
+      opacity: 0;
     }
   </style>
 
@@ -163,7 +180,7 @@
   let autoSwitchTimer = null;
 
   window.addEventListener('DOMContentLoaded', function() {
-    showDemoImage('adverse', 0);
+    showDemoImage('adverse', 0, true);
   });
 
   function showDemoImage(type, idx, restartTimer = true) {
@@ -174,10 +191,67 @@
     });
 
     const demo = demoData.find(d => d.type === type);
-    document.getElementById('demo-image-container').innerHTML =
-      `<img src="${demo.img}" alt="${demo.alt}" style="max-width: 60%; height: auto; margin-top: 1em;">`;
+    const container = document.getElementById('demo-image-container');
+    const oldImg = container.querySelector('.demo-image.active');
+    
+    // 如果是同一张图片，不需要切换
+    if (oldImg && oldImg.src.endsWith(demo.img)) {
+      currentDemoIndex = idx;
+      if (restartTimer) {
+        scheduleAutoSwitch();
+      }
+      return;
+    }
+    
+    // 创建新图片元素
+    const newImg = document.createElement('img');
+    newImg.className = 'demo-image';
+    newImg.src = demo.img;
+    newImg.alt = demo.alt;
+    
+    // 先加载新图片，加载完成后再开始动画
+    newImg.onload = function() {
+      container.appendChild(newImg);
+      
+      // 强制重排，确保新图片已添加到DOM
+      void newImg.offsetWidth;
+      
+      // 开始淡入淡出动画
+      if (oldImg) {
+        oldImg.classList.add('fade-out');
+      }
+      
+      // 下一帧开始淡入新图片
+      requestAnimationFrame(() => {
+        newImg.classList.add('active');
+        
+        // 动画完成后移除旧图片
+        if (oldImg) {
+          setTimeout(() => {
+            if (oldImg.parentNode) {
+              oldImg.remove();
+            }
+          }, 600); // 与CSS transition时间一致
+        }
+      });
+    };
+    
+    // 如果图片已经在缓存中，onload可能不会触发，所以也检查complete
+    if (newImg.complete) {
+      newImg.onload();
+    } else {
+      // 如果图片加载失败，至少显示新图片
+      newImg.onerror = function() {
+        container.appendChild(newImg);
+        newImg.classList.add('active');
+        if (oldImg) {
+          oldImg.remove();
+        }
+      };
+    }
 
     currentDemoIndex = idx;
+    // 启动/重启自动切换定时器
     if (restartTimer) {
       scheduleAutoSwitch();
     }
@@ -196,11 +270,11 @@
   </script>
 </section>  
 
-<section class="section">
+<section class="section" style="padding-top: 0;">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
-        <div style="display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 32px; margin-top: -6em;">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 32px; margin-top: 0em;">
           <img src="static/images/abstract.png" alt="Logo" style="height: 34px;">
           <h2 class="title is-3">Abstract</h2>
         </div>
@@ -239,7 +313,7 @@
         <p>If you find our paper or code useful for your research, please consider citing our work.</pp>
         <br>
         <pre><code>@misc{xia2025mathrmdmathrm3predictornoisefreedeterministicdiffusion,
-          title={$\mathrm{D}^{\mathrm{3}}$-Predictor: Noise-Free Deterministic Diffusion for Dense Prediction}, 
+          title={D³-Predictor: Noise-Free Deterministic Diffusion for Dense Prediction}, 
           author={Changliang Xia and Chengyou Jia and Minnan Luo and Zhuohang Dang and Xin Shen and Bowen Ping},
           year={2025},
           eprint={2512.07062},
