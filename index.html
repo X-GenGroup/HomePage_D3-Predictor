@@ -178,12 +178,18 @@
   ];
   let currentDemoIndex = 0;
   let autoSwitchTimer = null;
+  let isSwitching = false; // 标志位，防止切换过程中再次切换
 
   window.addEventListener('DOMContentLoaded', function() {
     showDemoImage('adverse', 0, true);
   });
 
   function showDemoImage(type, idx, restartTimer = true) {
+    // 如果正在切换中，忽略本次切换请求
+    if (isSwitching) {
+      return;
+    }
+
     const btns = document.querySelectorAll('#demo-buttons .button');
     btns.forEach((btn, i) => {
       if(i === idx) btn.classList.add('is-active');
@@ -203,6 +209,9 @@
       return;
     }
     
+    // 设置切换标志位
+    isSwitching = true;
+    
     // 创建新图片元素
     const newImg = document.createElement('img');
     newImg.className = 'demo-image';
@@ -211,28 +220,28 @@
     
     // 先加载新图片，加载完成后再开始动画
     newImg.onload = function() {
+      // 先将新图片添加到容器（但opacity为0，不可见）
       container.appendChild(newImg);
       
       // 强制重排，确保新图片已添加到DOM
       void newImg.offsetWidth;
       
-      // 开始淡入淡出动画
+      // 如果有旧图片，先让它淡出
       if (oldImg) {
         oldImg.classList.add('fade-out');
       }
       
-      // 下一帧开始淡入新图片
+      // 下一帧开始淡入新图片（与旧图片淡出同时进行）
       requestAnimationFrame(() => {
         newImg.classList.add('active');
         
-        // 动画完成后移除旧图片
-        if (oldImg) {
-          setTimeout(() => {
-            if (oldImg.parentNode) {
-              oldImg.remove();
-            }
-          }, 600); // 与CSS transition时间一致
-        }
+        // 动画完成后移除旧图片并清除切换标志位
+        setTimeout(() => {
+          if (oldImg && oldImg.parentNode) {
+            oldImg.remove();
+          }
+          isSwitching = false;
+        }, 600); // 与CSS transition时间一致
       });
     };
     
@@ -242,11 +251,12 @@
     } else {
       // 如果图片加载失败，至少显示新图片
       newImg.onerror = function() {
-        container.appendChild(newImg);
-        newImg.classList.add('active');
         if (oldImg) {
           oldImg.remove();
         }
+        container.appendChild(newImg);
+        newImg.classList.add('active');
+        isSwitching = false;
       };
     }
 
